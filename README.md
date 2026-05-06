@@ -1,4 +1,4 @@
-# Image Organizer v1.2
+# Image Organizer v1.3
 
 A lightweight Python utility designed to automatically categorize image files (wallpapers) based on their **aspect ratio**.
 
@@ -20,7 +20,7 @@ This script scans a specified directory and sorts images into three sub-folders:
 ## How to Use
 1.  **Install requirements:** `pip install Pillow`
 2.  **Run:** `python image_organizer.py`
-3.  **Provide:** `folder name to organize`
+3.  **Select:** `folder to organize`
 
 ---
 *Developed as a micro-automation utility for personal use.*

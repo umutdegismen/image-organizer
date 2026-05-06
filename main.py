@@ -1,28 +1,46 @@
-# Image Organizer v1.2
-# The folder must be on Desktop located!
+# Image Organizer v1.3
+# Features: Added GUI folder selection (Browse window)
 
+import tkinter as tk
+from tkinter import filedialog
 from pathlib import Path
 from PIL import Image
 import shutil
+import sys
 
-# initialize the folder paths:
-desktop_dir = Path.home() / "Desktop"
-user_input_folder_name = input("Enter the image folder name: ").strip()
-source_folder_dir = desktop_dir / user_input_folder_name
 
-horizontal_dir = source_folder_dir / "horizontal"
-vertical_dir = source_folder_dir / "vertical"
-square_dir = source_folder_dir / "square"
+# This method returns the selected path as a string
+def select_folder():
+    root = tk.Tk()
+    root.withdraw()  # hide the main window
+    root.attributes('-topmost', True)  # bring the window on top of the other windows
 
-# check if there are any image files in the source folder
-try:
-    image_extensions = ('.png', '.jpg', '.jpeg', '.webp')
-    images = [f for f in source_folder_dir.iterdir() if f.suffix.lower().endswith(image_extensions)]
+    selected_path = filedialog.askdirectory(title="Select Folder")  # returns the path as string
+    root.destroy()  # clean root object
+    return selected_path
 
-    if not images:
-        print(f"There are no images to be organized in <{source_folder_dir}>!")
-        exit()
-    else:
+
+def main():
+    try:
+        selected_path = select_folder()
+        if not selected_path:
+            print("Operation cancelled by user!")
+            sys.exit()
+
+        # initialize the folder paths:
+        source_folder_dir = Path(selected_path)
+        horizontal_dir = source_folder_dir / "horizontal"
+        vertical_dir = source_folder_dir / "vertical"
+        square_dir = source_folder_dir / "square"
+
+        # check if there are any image files in the source folder
+        image_extensions = ('.png', '.jpg', '.jpeg', '.webp')
+        images = [f for f in source_folder_dir.iterdir() if f.suffix.lower().endswith(image_extensions)]
+
+        if not images:
+            print(f"No images found to organize in: {source_folder_dir}")
+            sys.exit()
+
         # create the folders if they do not exist
         for folder in [horizontal_dir, vertical_dir, square_dir]:
             folder.mkdir(parents=True, exist_ok=True)
@@ -55,8 +73,9 @@ try:
                 print(f"Something went wrong when moving '{file_path.name}': {e}")
         print("-" * 40)
         print(f"Success: {len(images)} images have been organized!")
-except FileNotFoundError:
-    print(f"'{user_input_folder_name}' was not found in '{source_folder_dir}'")
+    except Exception as ex:
+        print(f"Something went wrong: {ex}")
 
 
-
+if __name__ == "__main__":
+    main()
