@@ -7,7 +7,7 @@ import shutil
 
 # initialize the folder paths:
 desktop_dir = Path.home() / "Desktop"
-user_input_folder_name = input("Enter the image folder name: ").lower()
+user_input_folder_name = input("Enter the image folder name: ").strip()
 source_folder_dir = desktop_dir / user_input_folder_name
 
 horizontal_dir = source_folder_dir / "horizontal"
@@ -26,8 +26,8 @@ try:
         # create the folders if they do not exist
         for folder in [horizontal_dir, vertical_dir, square_dir]:
             folder.mkdir(parents=True, exist_ok=True)
-        print("------------------- o -------------------")
-        print(f"{len(images)} images found. Starting organization...\n------------------- o -------------------")
+        print("-" * 40)
+        print(f"{len(images)} images found. Starting organization...\n" + "-" * 40)
 
         for file_path in images:
             # if it's a folder, skip
@@ -53,7 +53,8 @@ try:
 
             except Exception as e:
                 print(f"Something went wrong when moving '{file_path.name}': {e}")
-        print(f"------------------- o -------------------\nSuccess: {len(images)} Images have been organized!")
+        print("-" * 40)
+        print(f"Success: {len(images)} images have been organized!")
 except FileNotFoundError:
     print(f"'{user_input_folder_name}' was not found in '{source_folder_dir}'")
 
